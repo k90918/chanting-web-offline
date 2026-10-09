@@ -1,7 +1,7 @@
 const names=['武德真經','金剛般若波羅蜜經','藥師琉璃光如來本願功德經','地藏菩薩本願經','般若波羅蜜多心經'];
 const $=s=>document.querySelector(s); const key='offline-chant-web-v1';
 const state=JSON.parse(localStorage.getItem(key)||'{"goals":[9,9,9,9,9],"records":{}}');
-const today=new Date().toISOString().slice(0,10); $('#date').value=today;
+$('#date').value=DateUtils.localDateString();
 function lunar(date){const [y,m,d]=date.split('-').map(Number);return Solar.fromYmd(y,m,d).getLunar()}
 function lunarYear(date){return lunar(date).getYear()-1911}
 function lunarMonthKey(date){const x=lunar(date);return `${x.getYear()}-${x.getMonth()}`}
@@ -17,4 +17,5 @@ $('#settings').onclick=()=>{const box=$('#goalInputs');box.innerHTML=names.map((
 function downloadBackup(){const backup=ChantBackup.createBackup(state);const data=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});const link=document.createElement('a');link.href=URL.createObjectURL(data);link.download=ChantBackup.backupFilename();link.click();URL.revokeObjectURL(link.href);$('#backupDialog').close();alert('備份檔已匯出。')}
 async function importBackup(file){try{const restored=ChantBackup.restoreBackup(await file.text());if(!confirm('匯入備份會覆蓋此手機目前的月目標與所有持誦紀錄，確定要繼續嗎？'))return;Object.assign(state,restored);saveState();render();$('#backupDialog').close();alert('備份已匯入完成。')}catch(error){alert(error.message)}}
 $('#backup').onclick=()=>$('#backupDialog').showModal();$('#cancelBackup').onclick=()=>$('#backupDialog').close();$('#exportBackup').onclick=downloadBackup;$('#importBackup').onclick=()=>$('#backupFile').click();$('#backupFile').addEventListener('change',event=>{const [file]=event.target.files;if(file)importBackup(file);event.target.value=''});
-if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');render();
+function resetDateAtMidnight(){const now=new Date();const next=new Date(now);next.setHours(24,0,1,0);setTimeout(()=>{$('#date').value=DateUtils.localDateString();render();resetDateAtMidnight()},next-now)}
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');render();resetDateAtMidnight();
