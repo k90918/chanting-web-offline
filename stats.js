@@ -41,4 +41,8 @@ function daysUntilNextLunarFirst(date) {
   throw new Error('找不到下個農曆初一');
 }
 
-module.exports = { annualTotals, lunarYear, lunarMonthKey, monthlyTotals, daysUntilNextLunarFirst };
+function countdownClass(days) {
+  return days <= 5 ? 'urgent' : 'normal';
+}
+
+module.exports = { annualTotals, lunarYear, lunarMonthKey, monthlyTotals, daysUntilNextLunarFirst, countdownClass };

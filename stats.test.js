@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const { annualTotals, monthlyTotals, daysUntilNextLunarFirst } = require('./stats');
+const { annualTotals, monthlyTotals, daysUntilNextLunarFirst, countdownClass } = require('./stats');
 
 const result = annualTotals(115, [
   { date: '2026-02-17', counts: [1, 2, 3, 4, 5] },
@@ -18,4 +18,6 @@ const month = monthlyTotals('2026-02-17', [
 ]);
 assert.deepEqual(month, [3, 2, 4, 4, 7]);
 assert.equal(daysUntilNextLunarFirst('2026-02-17'), 30);
+assert.equal(countdownClass(6), 'normal');
+assert.equal(countdownClass(5), 'urgent');
 console.log('年度、農曆月與倒數日測試通過');
