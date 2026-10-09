@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const { annualTotals, monthlyTotals } = require('./stats');
+const { annualTotals, monthlyTotals, daysUntilNextLunarFirst } = require('./stats');
 
 const result = annualTotals(115, [
   { date: '2026-02-17', counts: [1, 2, 3, 4, 5] },
@@ -17,4 +17,5 @@ const month = monthlyTotals('2026-02-17', [
   { date: '2026-03-19', counts: [8, 8, 8, 8, 8] },
 ]);
 assert.deepEqual(month, [3, 2, 4, 4, 7]);
-console.log('年度與農曆月統計測試通過');
+assert.equal(daysUntilNextLunarFirst('2026-02-17'), 30);
+console.log('年度、農曆月與倒數日測試通過');

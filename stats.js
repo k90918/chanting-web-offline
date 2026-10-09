@@ -30,4 +30,15 @@ function monthlyTotals(selectedDate, records) {
   return counts;
 }
 
-module.exports = { annualTotals, lunarYear, lunarMonthKey, monthlyTotals };
+function daysUntilNextLunarFirst(date) {
+  const start = new Date(`${date}T00:00:00`);
+  for (let days = 1; days <= 31; days += 1) {
+    const candidate = new Date(start);
+    candidate.setDate(candidate.getDate() + days);
+    const solar = Solar.fromYmd(candidate.getFullYear(), candidate.getMonth() + 1, candidate.getDate());
+    if (solar.getLunar().getDay() === 1) return days;
+  }
+  throw new Error('找不到下個農曆初一');
+}
+
+module.exports = { annualTotals, lunarYear, lunarMonthKey, monthlyTotals, daysUntilNextLunarFirst };
