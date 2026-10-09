@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node stats.test.js && node backup.test.js && node annual_view.test.js"
+    "test": "node stats.test.js && node backup.test.js && node annual_view.test.js && node monthly_view.test.js"
   },
   "keywords": [],
   "author": "",

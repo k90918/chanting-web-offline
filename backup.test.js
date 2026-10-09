@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const { createBackup, restoreBackup } = require('./backup');
+const { createBackup, restoreBackup, backupFilename } = require('./backup');
 
 const state = {
   goals: [9, 8, 7, 6, 5],
@@ -16,4 +16,5 @@ assert.deepEqual(restoreBackup(JSON.stringify(backup)), state);
 assert.throws(() => restoreBackup(JSON.stringify({ format: 'other', version: 1, state })), /備份檔/);
 assert.throws(() => restoreBackup(JSON.stringify({ ...backup, state: { ...state, goals: [9] } })), /月目標/);
 assert.throws(() => restoreBackup(JSON.stringify({ ...backup, state: { ...state, records: { '2026-10-09': [1, 2, 3] } } })), /持誦紀錄/);
+assert.equal(backupFilename(new Date(2026, 9, 9)), '持經紀錄_2026-10-09.json');
 console.log('備份匯出與匯入驗證測試通過');
