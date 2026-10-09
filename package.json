@@ -1,0 +1,15 @@
+{
+  "name": "chanting-web-offline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node stats.test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lunar-javascript": "^1.7.7"
+  }
+}

@@ -1,0 +1,17 @@
+const { Solar } = require('lunar-javascript');
+
+function lunarYear(date) {
+  const [year, month, day] = date.split('-').map(Number);
+  return Solar.fromYmd(year, month, day).getLunar().getYear() - 1911;
+}
+
+function annualTotals(targetLunarYear, records) {
+  const counts = [0, 0, 0, 0, 0];
+  for (const record of records) {
+    if (lunarYear(record.date) !== targetLunarYear) continue;
+    record.counts.forEach((count, index) => { counts[index] += count; });
+  }
+  return { counts, total: counts.reduce((sum, value) => sum + value, 0) };
+}
+
+module.exports = { annualTotals, lunarYear };
