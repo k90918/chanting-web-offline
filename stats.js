@@ -14,4 +14,20 @@ function annualTotals(targetLunarYear, records) {
   return { counts, total: counts.reduce((sum, value) => sum + value, 0) };
 }
 
-module.exports = { annualTotals, lunarYear };
+function lunarMonthKey(date) {
+  const [year, month, day] = date.split('-').map(Number);
+  const lunar = Solar.fromYmd(year, month, day).getLunar();
+  return `${lunar.getYear()}-${lunar.getMonth()}`;
+}
+
+function monthlyTotals(selectedDate, records) {
+  const target = lunarMonthKey(selectedDate);
+  const counts = [0, 0, 0, 0, 0];
+  for (const record of records) {
+    if (lunarMonthKey(record.date) !== target) continue;
+    record.counts.forEach((count, index) => { counts[index] += count; });
+  }
+  return counts;
+}
+
+module.exports = { annualTotals, lunarYear, lunarMonthKey, monthlyTotals };

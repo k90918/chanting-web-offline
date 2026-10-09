@@ -4,7 +4,7 @@ const state=JSON.parse(localStorage.getItem(key)||'{"goals":[9,9,9,9,9],"records
 const today=new Date().toISOString().slice(0,10); $('#date').value=today;
 function lunar(date){const [y,m,d]=date.split('-').map(Number);return Solar.fromYmd(y,m,d).getLunar()}
 function lunarYear(date){return lunar(date).getYear()-1911}
-function lunarMonthKey(date){const x=lunar(date);return `${x.getYear()}-${x.getMonth()}-${x.getDay()}`.split('-').slice(0,2).join('-')}
+function lunarMonthKey(date){const x=lunar(date);return `${x.getYear()}-${x.getMonth()}`}
 function saveState(){localStorage.setItem(key,JSON.stringify(state))}
 function totals(filter){const out=[0,0,0,0,0];Object.entries(state.records).filter(([date])=>filter(date)).forEach(([,v])=>v.forEach((n,i)=>out[i]+=n));return out}
 function cards(target, values, goals){target.innerHTML=names.map((name,i)=>`<div class="item">${name}<b>${values[i]}${goals?` / ${goals[i]}`:' 部'}</b>${goals?`<progress max="${goals[i]}" value="${Math.min(values[i],goals[i])}"></progress>`:''}</div>`).join('')}
